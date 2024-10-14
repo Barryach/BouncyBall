@@ -1,38 +1,46 @@
+using System.Collections.Specialized;
 using UnityEngine;
 
-public class Movimiento : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public float velocidadX = 5f;          // Velocidad de movimiento en X
-    public float fuerzaSalto = 5f;         // Fuerza del salto
-    public float gravedad = 2f; // Ajuste de la gravedad
-    private Rigidbody rb;                  // Referencia al Rigidbody
+    public float moveSpeed = 5f; 
+    public float jumpForce = 5f; 
+    private bool isGrounded;
+    private Rigidbody rb; 
 
     void Start()
     {
-        // Obtener el Rigidbody del objeto
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;  // Desactivar la gravedad estándar de Unity
+        rb = GetComponent<Rigidbody>(); 
     }
 
     void Update()
     {
-        // Movimiento en el eje X
-        transform.position += new Vector3(velocidadX * Time.deltaTime, 0, 0);
+        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
 
-        // Aplicar gravedad personalizada manualmente
-        rb.AddForce(Vector3.down * gravedad, ForceMode.Acceleration);
-
-        // Si el jugador presiona la barra espaciadora y la pelota está en el suelo
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            Saltar();
+            Jump();
         }
     }
 
-    void Saltar()
+    private void Jump()
     {
-        // Añadir fuerza en el eje Y para saltar
-        rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
 }
