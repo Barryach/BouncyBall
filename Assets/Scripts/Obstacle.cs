@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using UnityEngine;
 
-public class SpikesObstacle : MonoBehaviour
+public class Obstacles : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
