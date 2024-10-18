@@ -1,46 +1,34 @@
-using System.Collections.Specialized;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class BallMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f; 
-    public float jumpForce = 5f; 
-    private bool isGrounded;
-    private Rigidbody rb; 
+    public float speed = 5f;        
+    public float jumpForce = 5f;    
+    private Rigidbody rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.01f)
         {
-            Jump();
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-    private void Jump()
+    private void OnTriggerEnter(Collider other)
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (other.CompareTag("Obstacle"))
         {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.PlayerDied();
+            }
         }
     }
 }
