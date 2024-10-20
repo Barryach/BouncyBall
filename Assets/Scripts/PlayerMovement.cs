@@ -30,5 +30,14 @@ public class BallMovement : MonoBehaviour
                 GameManager.instance.PlayerDied();
             }
         }
+
+        if (other.CompareTag("Final"))
+        {
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.GoToMainMenu();
+            }
+        }
     }
+
 }

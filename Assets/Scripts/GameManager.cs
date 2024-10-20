@@ -13,13 +13,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Más de un Game Manager en escena!");
+            Debug.Log("¡Más de un Game Manager en escena!");
         }
     }
+
     public void PlayerDied()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reinicia la escena actual
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu"); // Carga la escena del menú principal
     }
 }
-
-
