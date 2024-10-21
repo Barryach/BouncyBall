@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    public float speed = 5f;        
-    public float jumpForce = 5f;    
+    public float speed = 5f;
+    public float jumpForce = 5f;
     private Rigidbody rb;
 
     void Start()
@@ -13,8 +13,10 @@ public class BallMovement : MonoBehaviour
 
     void Update()
     {
+        // Movimiento hacia adelante
         transform.Translate(Vector3.right * speed * Time.deltaTime);
 
+        // Saltar con barra espaciadora
         if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.01f)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -39,5 +41,4 @@ public class BallMovement : MonoBehaviour
             }
         }
     }
-
 }
